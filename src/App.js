@@ -1,46 +1,56 @@
-import React from 'react';
+import { Component, Fragment } from 'react';
 import './App.css';
 
-const Header = () => {
-	return <h2>HEllo World</h2>;
-};
-
-//const Field = () => {
-//	const holder = 'Enter here';
-//	const styleField = {
-//		width: '300px',
-//	};
-//	return <input placeholder={holder} type="text" style={styleField} />;
-//};
-
-//тот же Field только при помощи классового подхода
-class Field extends React.Component {
-	render() {
-		const holder = 'Enter here';
-		const styleField = {
-			width: '300px',
+class WhoAmI extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			years: 27,
+			position: '',
 		};
-
-		return <input placeholder={holder} type="text" style={styleField} />;
 	}
-}
 
-function Btn() {
-	const text = 'Log In';
-	const logged = false;
+	nextYear = () => {
+		this.setState((state) => ({ years: state.years + 1 }));
+	};
 
-	return <button>{}</button>;
+	commitInputChanges = (e, color) => {
+		console.log(color);
+		this.setState({
+			position: e.target.value,
+		});
+	};
+
+	render() {
+		const { name, surname, link } = this.props;
+		const { position, years } = this.state;
+		return (
+			<>
+				<button onClick={this.nextYear}>{this.state.text}</button>
+				<h1>
+					My name is {name}, surname - {surname}, age - {years}, position -{' '}
+					{position}
+				</h1>
+				<a href={link}>My profile</a>
+				<form>
+					<span>Введите должность</span>
+					<input
+						type="text"
+						onChange={(e) => this.commitInputChanges(e, 'some color')}
+					/>
+				</form>
+			</>
+		);
+	}
 }
 
 function App() {
 	return (
 		<div className="App">
-			<Header />
-			<Field />
-			<Btn />
+			<WhoAmI name="John" surname="Smith" link="facebook.com" />
+			<WhoAmI name="Alex" surname="Shepard" link="vk.com" />
 		</div>
 	);
 }
 
-export { Header };
 export default App;
