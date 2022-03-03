@@ -1,6 +1,7 @@
-import { Component, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import './App.css';
 import styled from 'styled-components';
+import BootstrapTest from './BootstrapTest';
 
 const EmpItem = styled.div`
 	padding: 20px;
@@ -58,16 +59,12 @@ class WhoAmI extends Component {
 			<EmpItem active>
 				<Button onClick={this.nextYear}>{this.state.text}</Button>
 				<Header>
-					My name is {name}, surname - {surname}, age - {years}, position -{' '}
-					{position}
+					My name is {name}, surname - {surname}, age - {years}, position - {position}
 				</Header>
 				<a href={link}>My profile</a>
 				<form>
 					<span>Введите должность</span>
-					<input
-						type="text"
-						onChange={(e) => this.commitInputChanges(e, 'some color')}
-					/>
+					<input type="text" onChange={(e) => this.commitInputChanges(e, 'some color')} />
 				</form>
 			</EmpItem>
 		);
@@ -79,9 +76,44 @@ const Wrapper = styled.div`
 	margin: 80px auto 0 auto;
 `;
 
+const DynamicGreating = (props) => {
+	return (
+		<div className={'mb-3 p-3 border border-' + props.color}>
+			{React.Children.map(props.children, (child) => {
+				return React.cloneElement(child, { className: 'shadow p-3 m-3 border rounded' });
+			})}
+		</div>
+	);
+};
+
+const HelloGreating = () => {
+	return (
+		<div style={{ width: '600px', margin: '0 auto' }}>
+			<DynamicGreating color={'primary'}>
+				<h2>Hello world!</h2>
+			</DynamicGreating>
+		</div>
+	);
+};
+
 function App() {
 	return (
 		<Wrapper>
+			<HelloGreating />
+			<BootstrapTest
+				left={
+					<DynamicGreating color={'primary'}>
+						<h2>This weel was hard</h2>
+						<h2>Hello world!</h2>
+					</DynamicGreating>
+				}
+				right={
+					<DynamicGreating color={'primary'}>
+						<h2>RIGHT</h2>
+					</DynamicGreating>
+				}
+			/>
+
 			<WhoAmI name="John" surname="Smith" link="facebook.com" />
 			<WhoAmI name="Alex" surname="Shepard" link="vk.com" />
 		</Wrapper>
